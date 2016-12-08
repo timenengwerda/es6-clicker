@@ -25,6 +25,7 @@ class Recipes {
 
 class Recipe {
     constructor (options) {
+        this.id = (options.id) ? options.id : true
         this.persists = (options.persists) ? options.persists : true
         this.price = (options.price) ? options.price : 0
         this.title = (options.title) ? options.title : 0
@@ -47,7 +48,7 @@ class Recipe {
                 switch (this.upgradeType) {
                     case 'amountPerSecond':
                         game.setAmountPerSecond(game.getAmountPerSecond() + this.upgradeIncrease)
-                        this.upgradeIncrease += this.level
+                        this.upgradeIncrease += Math.floor((.09 * this.level))
                         break
                     case 'clickAmount':
                         game.setClickAmount(game.getClickAmount() + this.upgradeIncrease)

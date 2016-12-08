@@ -49,7 +49,7 @@ var Recipe = function () {
                     switch (_this.upgradeType) {
                         case 'amountPerSecond':
                             game.setAmountPerSecond(game.getAmountPerSecond() + _this.upgradeIncrease);
-                            _this.upgradeIncrease += _this.level;
+                            _this.upgradeIncrease += Math.floor(.09 * _this.level);
                             break;
                         case 'clickAmount':
                             game.setClickAmount(game.getClickAmount() + _this.upgradeIncrease);
@@ -74,6 +74,7 @@ var Recipe = function () {
             return false;
         };
 
+        this.id = options.id ? options.id : true;
         this.persists = options.persists ? options.persists : true;
         this.price = options.price ? options.price : 0;
         this.title = options.title ? options.title : 0;

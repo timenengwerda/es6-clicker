@@ -1,15 +1,23 @@
 class Game {
     constructor (options = {}) {
-        this.currentCoinAmount = (options.currentCoinAmount) ? options.currentCoinAmount : 90
-        this.amountPerSecond = (options.amountPerSecond) ? options.amountPerSecond : 1
-        this.amountPerClick = (options.amountPerClick) ? options.amountPerClick : 100
+        console.log(options)
+        this.currentCoinAmount = (options.currentCoinAmount) ? options.currentCoinAmount : 0
+        this.amountPerSecond = (options.amountPerSecond) ? options.amountPerSecond : 0
+        this.amountPerClick = (options.amountPerClick) ? options.amountPerClick : 1
         this.clickBonusMultiplier = (options.clickBonusMultiplier) ? options.clickBonusMultiplier : 100
 
         this.clickButton = document.querySelector('#clicker')
         clicker.addEventListener('click', event => this.increaseAmountBy(this.getClickAmount()))
 
+        document.querySelector('#resetGameState').addEventListener('click', event => this.resetGameState())
+
         this.timer = 0
         this.recipes = new Recipes(options.recipes)
+    }
+
+    resetGameState = () => {
+        localStorage.removeItem('gameState')
+        window.location = window.location
     }
 
     getClickAmount = () => Math.round(this.amountPerClick * (this.clickBonusMultiplier/100))
@@ -40,6 +48,40 @@ class Game {
         return millisecondsPassed
     }
 
+    save = () => {
+        // create one big json string and put it in a localStorage
+
+        let recipesState = []
+        this.recipes.recipes.forEach(rec => {
+            recipesState.push({
+                id: rec.id,
+                persists: rec.persists,
+                price: rec.price,
+                title: rec.title,
+                level: rec.level,
+                maxLevel: rec.maxLevel,
+                description: rec.description,
+                upgrade: {
+                    type: rec.upgradeType,
+                    increase: rec.upgradeIncrease
+                }
+            })
+        })
+
+        const gameState = [{
+            currentCoinAmount: this.currentCoinAmount,
+            amountPerSecond: this.amountPerSecond,
+            amountPerClick: this.amountPerClick,
+            clickBonusMultiplier: this.clickBonusMultiplier,
+            clickButton: this.clickButton,
+            timer: this.timer,
+            recipes: recipesState
+        }]
+
+
+        localStorage.setItem('gameState', JSON.stringify(gameState))
+    }
+
     draw = () => {
         /*
         since timers/tickers in Javascript are a P.I.T.A
@@ -54,8 +96,8 @@ class Game {
             this.timer = 0
 
             this.recipes.drawRecipes()
+            this.save()
         }
-
 
         document.querySelector('#currentCoinAmount').innerHTML = this.getAmount()
         document.querySelector('#currentCoinsPerSecond').innerHTML = this.getAmountPerSecond()

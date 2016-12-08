@@ -2,20 +2,20 @@
 
 var recipes = [{
     title: 'Item 1',
-    price: 100,
-    level: 1,
-    description: 'Increases amount per second by:',
-    upgrade: {
-        type: 'amountPerSecond',
-        increase: 1
-    }
-}, {
-    title: 'Item 2',
-    price: 300,
+    price: 50,
     level: 1,
     description: 'Increases click amount by:',
     upgrade: {
         type: 'clickAmount',
+        increase: 1
+    }
+}, {
+    title: 'Item 2',
+    price: 170,
+    level: 1,
+    description: 'Increases amount per second by:',
+    upgrade: {
+        type: 'amountPerSecond',
         increase: 1
     }
 }, {
@@ -38,7 +38,25 @@ var recipes = [{
         increase: 5
     }
 }];
-var game = new Game({ recipes: recipes });
+
+// and an incremental ID to all recipe. Easier to identify later on when we want to request a savestate
+var counter = 1;
+recipes.forEach(function (rec) {
+    rec.id = counter;
+    ++counter;
+});
+
+var game = null;
+
+var existingGameState = localStorage.getItem('gameState');
+console.log(existingGameState);
+if (existingGameState) {
+    game = new Game(JSON.parse(existingGameState).find(function (r) {
+        return r;
+    }));
+} else {
+    game = new Game({ recipes: recipes });
+}
 
 window.requestAnimFrame = function () {
     return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function (callback) {

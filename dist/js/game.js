@@ -9,6 +9,11 @@ var Game = function Game() {
 
     _classCallCheck(this, Game);
 
+    this.resetGameState = function () {
+        localStorage.removeItem('gameState');
+        window.location = window.location;
+    };
+
     this.getClickAmount = function () {
         return Math.round(_this.amountPerClick * (_this.clickBonusMultiplier / 100));
     };
@@ -60,6 +65,39 @@ var Game = function Game() {
         return millisecondsPassed;
     };
 
+    this.save = function () {
+        // create one big json string and put it in a localStorage
+
+        var recipesState = [];
+        _this.recipes.recipes.forEach(function (rec) {
+            recipesState.push({
+                id: rec.id,
+                persists: rec.persists,
+                price: rec.price,
+                title: rec.title,
+                level: rec.level,
+                maxLevel: rec.maxLevel,
+                description: rec.description,
+                upgrade: {
+                    type: rec.upgradeType,
+                    increase: rec.upgradeIncrease
+                }
+            });
+        });
+
+        var gameState = [{
+            currentCoinAmount: _this.currentCoinAmount,
+            amountPerSecond: _this.amountPerSecond,
+            amountPerClick: _this.amountPerClick,
+            clickBonusMultiplier: _this.clickBonusMultiplier,
+            clickButton: _this.clickButton,
+            timer: _this.timer,
+            recipes: recipesState
+        }];
+
+        localStorage.setItem('gameState', JSON.stringify(gameState));
+    };
+
     this.draw = function () {
         /*
         since timers/tickers in Javascript are a P.I.T.A
@@ -74,6 +112,7 @@ var Game = function Game() {
             _this.timer = 0;
 
             _this.recipes.drawRecipes();
+            _this.save();
         }
 
         document.querySelector('#currentCoinAmount').innerHTML = _this.getAmount();
@@ -82,14 +121,19 @@ var Game = function Game() {
         document.querySelector('#bonusMultiplier').innerHTML = _this.getBonusMultiplier();
     };
 
-    this.currentCoinAmount = options.currentCoinAmount ? options.currentCoinAmount : 90;
-    this.amountPerSecond = options.amountPerSecond ? options.amountPerSecond : 1;
-    this.amountPerClick = options.amountPerClick ? options.amountPerClick : 100;
+    console.log(options);
+    this.currentCoinAmount = options.currentCoinAmount ? options.currentCoinAmount : 0;
+    this.amountPerSecond = options.amountPerSecond ? options.amountPerSecond : 0;
+    this.amountPerClick = options.amountPerClick ? options.amountPerClick : 1;
     this.clickBonusMultiplier = options.clickBonusMultiplier ? options.clickBonusMultiplier : 100;
 
     this.clickButton = document.querySelector('#clicker');
     clicker.addEventListener('click', function (event) {
         return _this.increaseAmountBy(_this.getClickAmount());
+    });
+
+    document.querySelector('#resetGameState').addEventListener('click', function (event) {
+        return _this.resetGameState();
     });
 
     this.timer = 0;
