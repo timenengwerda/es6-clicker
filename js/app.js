@@ -1,7 +1,7 @@
 const recipes = [
     {
         title: 'Item 1',
-        price: 50,
+        price: 150,
         level: 1,
         description: 'Increases click amount by:',
         upgrade: {
@@ -11,12 +11,12 @@ const recipes = [
     },
     {
         title: 'Item 2',
-        price: 170,
+        price: 260,
         level: 1,
         description: 'Increases amount per second by:',
         upgrade: {
             type: 'amountPerSecond',
-            increase: 1
+            increase: 1.25
         }
     },
     {

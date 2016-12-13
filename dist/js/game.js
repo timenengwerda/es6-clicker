@@ -98,6 +98,13 @@ var Game = function Game() {
         localStorage.setItem('gameState', JSON.stringify(gameState));
     };
 
+    this.amountPerSecondCalculated = function () {
+        var newAmount = _this.currentCoinAmount - _this.oldAmount;
+        _this.oldAmount = _this.currentCoinAmount;
+
+        return newAmount >= 0 ? Math.round(newAmount) : false;
+    };
+
     this.draw = function () {
         /*
         since timers/tickers in Javascript are a P.I.T.A
@@ -107,12 +114,19 @@ var Game = function Game() {
         var milliseconds = _this.defineMillisecondsPassed();
 
         _this.timer += milliseconds;
+
+        // tick every second
         if (_this.timer >= 1000) {
             _this.increaseAmountBy(_this.getAmountPerSecond() * (_this.timer / 1000));
             _this.timer = 0;
 
             _this.recipes.drawRecipes();
             _this.save();
+
+            var aps = _this.amountPerSecondCalculated();
+            if (aps !== false) {
+                document.querySelector('#amountPerSecond').innerHTML = aps;
+            }
         }
 
         document.querySelector('#currentCoinAmount').innerHTML = _this.getAmount();
@@ -123,7 +137,7 @@ var Game = function Game() {
 
     console.log(options);
     this.currentCoinAmount = options.currentCoinAmount ? options.currentCoinAmount : 0;
-    this.amountPerSecond = options.amountPerSecond ? options.amountPerSecond : 0;
+    this.amountPerSecond = options.amountPerSecond ? options.amountPerSecond : 25;
     this.amountPerClick = options.amountPerClick ? options.amountPerClick : 1;
     this.clickBonusMultiplier = options.clickBonusMultiplier ? options.clickBonusMultiplier : 100;
 
@@ -138,4 +152,6 @@ var Game = function Game() {
 
     this.timer = 0;
     this.recipes = new Recipes(options.recipes);
+
+    this.oldAmount = this.currentCoinAmount;
 };

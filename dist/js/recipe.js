@@ -61,7 +61,8 @@ var Recipe = function () {
                     }
 
                     ++_this.level;
-                    _this.price += Math.round(_this.price * (.085 * (_this.level - 1)));
+                    _this.price += Math.round(_this.price * (.055 * (_this.level - 1)));
+                    _this.upgradeIncreaseprice += Math.round(_this.price * (.015 * (_this.level - 1)));
 
                     if (_this.level >= _this.maxLevel) {
                         _this.persists = false;
@@ -106,7 +107,7 @@ var Recipe = function () {
                 });
 
                 this.listItem = $('<li />');
-                this.listItem.html('<span class="level">' + this.level + '</span><br>\n                                <span class="title">' + this.title + '</span><br>\n                                <span class="description">' + this.description + '</span><span class="upgradeIncrease">' + this.upgradeIncrease + '</span>\n                                <br>').append(this.button);
+                this.listItem.html('Amount purchased: <span class="level">' + this.level + '</span><br>\n                                <span class="title">' + this.title + '</span><br>\n                                <span class="description">' + this.description + '</span><span class="upgradeIncrease">' + this.upgradeIncrease + '</span>\n                                <br>').append(this.button);
             }
 
             this.button.html(this.price);

@@ -2,7 +2,7 @@ class Game {
     constructor (options = {}) {
         console.log(options)
         this.currentCoinAmount = (options.currentCoinAmount) ? options.currentCoinAmount : 0
-        this.amountPerSecond = (options.amountPerSecond) ? options.amountPerSecond : 0
+        this.amountPerSecond = (options.amountPerSecond) ? options.amountPerSecond : 25
         this.amountPerClick = (options.amountPerClick) ? options.amountPerClick : 1
         this.clickBonusMultiplier = (options.clickBonusMultiplier) ? options.clickBonusMultiplier : 100
 
@@ -13,6 +13,8 @@ class Game {
 
         this.timer = 0
         this.recipes = new Recipes(options.recipes)
+
+        this.oldAmount = this.currentCoinAmount;
     }
 
     resetGameState = () => {
@@ -82,6 +84,14 @@ class Game {
         localStorage.setItem('gameState', JSON.stringify(gameState))
     }
 
+
+    amountPerSecondCalculated = () => {
+        let newAmount = this.currentCoinAmount - this.oldAmount
+        this.oldAmount = this.currentCoinAmount
+
+        return (newAmount >= 0) ? Math.round(newAmount) : false
+    }
+
     draw = () => {
         /*
         since timers/tickers in Javascript are a P.I.T.A
@@ -91,17 +101,28 @@ class Game {
         let milliseconds = this.defineMillisecondsPassed();
 
         this.timer += milliseconds
+
+        // tick every second
         if (this.timer >= 1000) {
             this.increaseAmountBy(this.getAmountPerSecond() * (this.timer / 1000))
             this.timer = 0
 
             this.recipes.drawRecipes()
             this.save()
+
+
+            const aps = this.amountPerSecondCalculated()
+            if (aps !== false) {
+                document.querySelector('#amountPerSecond').innerHTML = aps
+            }
         }
+
+
 
         document.querySelector('#currentCoinAmount').innerHTML = this.getAmount()
         document.querySelector('#currentCoinsPerSecond').innerHTML = this.getAmountPerSecond()
         document.querySelector('#clickAmount').innerHTML = this.getClickAmount()
         document.querySelector('#bonusMultiplier').innerHTML = this.getBonusMultiplier()
     }
+
 }

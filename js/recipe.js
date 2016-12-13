@@ -60,7 +60,8 @@ class Recipe {
                 }
 
                 ++this.level
-                this.price += Math.round(this.price * (.085 * (this.level - 1)))
+                this.price += Math.round(this.price * (.055 * (this.level - 1)))
+                this.upgradeIncreaseprice += Math.round(this.price * (.015 * (this.level - 1)))
 
                 if (this.level >= this.maxLevel) {
                     this.persists = false
@@ -87,7 +88,7 @@ class Recipe {
             })
 
             this.listItem = $('<li />')
-            this.listItem.html(`<span class="level">${this.level}</span><br>
+            this.listItem.html(`Amount purchased: <span class="level">${this.level}</span><br>
                                 <span class="title">${this.title}</span><br>
                                 <span class="description">${this.description}</span><span class="upgradeIncrease">${this.upgradeIncrease}</span>
                                 <br>`).append(this.button)
