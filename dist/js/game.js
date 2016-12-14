@@ -139,8 +139,9 @@ var Game = function Game() {
     this.clickBonusMultiplier = options.clickBonusMultiplier ? options.clickBonusMultiplier : 100;
 
     this.clickButton = document.querySelector('#clicker');
-    clicker.addEventListener('click', function (event) {
-        return _this.increaseAmountBy(_this.getClickAmount());
+    this.clickButton.addEventListener('click', function (event) {
+        _this.increaseAmountBy(_this.getClickAmount());
+        _this.user.increaseExp(1);
     });
 
     document.querySelector('#resetGameState').addEventListener('click', function (event) {
@@ -149,6 +150,7 @@ var Game = function Game() {
 
     this.timer = 0;
     this.recipes = new Recipes(options.recipes);
+    this.user = new User();
 
     this.oldAmount = this.currentCoinAmount;
 };

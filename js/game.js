@@ -6,12 +6,16 @@ class Game {
         this.clickBonusMultiplier = (options.clickBonusMultiplier) ? options.clickBonusMultiplier : 100
 
         this.clickButton = document.querySelector('#clicker')
-        clicker.addEventListener('click', event => this.increaseAmountBy(this.getClickAmount()))
+        this.clickButton.addEventListener('click', event => {
+            this.increaseAmountBy(this.getClickAmount())
+            this.user.increaseExp(1)
+        })
 
         document.querySelector('#resetGameState').addEventListener('click', event => this.resetGameState())
 
         this.timer = 0
         this.recipes = new Recipes(options.recipes)
+        this.user = new User()
 
         this.oldAmount = this.currentCoinAmount;
     }
