@@ -10,6 +10,7 @@ class Recipes {
             this.recipes.push(new Recipe(recipe))
         })
 
+
         this.drawRecipes()
     }
 
@@ -51,7 +52,7 @@ class Recipe {
 
         this.createTemplate()
 
-         if (this.level >= this.maxLevel) {
+        if (this.level > this.maxLevel) {
             this.persists = false
         }
     }
@@ -59,23 +60,39 @@ class Recipe {
     createTemplate = () => {
         this.button = $('<button />').addClass('btn').addClass('btn-primary')
         this.listItem = $('<li />')
-        this.levelEl = $('<span />').addClass('level').html(this.level)
-        this.titleEl = $('<span />').addClass('title').html(this.title)
+        this.levelEl = $('<div />').addClass('level').html(this.level)
+        this.titleEl = $('<div />').addClass('title').html(this.title)
         this.descriptionEl = $('<span />').addClass('description').html(this.description)
         this.upgradeIncreaseEl = $('<span />').addClass('upgradeIncrease').html(this.upgradeIncrease)
 
-        this.listItem.html(`
-        Amount purchased: ${this.levelEl.html()}<br>
-        ${this.titleEl.html()}<br>
-        ${this.descriptionEl.html()} ${this.upgradeIncreaseEl.html()}<br>
-        `)
+        // this.listItem.html(`
+        // Amount purchased: ${this.levelEl}<br>
+        // ${this.titleEl}<br>
+        // ${this.descriptionEl} ${this.upgradeIncreaseEl}<br>
+        // `)
 
         this.button.on('click', e => {
             this.buy()
         })
 
 
+        this.listItem.append(this.levelEl)
+        this.listItem.append(this.titleEl)
+        this.listItem.append(this.descriptionEl)
+        this.listItem.append(this.upgradeIncreaseEl)
         this.listItem.append(this.button)
+    }
+
+    updateLevelElement () {
+        this.levelEl.html(`Purchased: ${this.level}`)
+    }
+
+     updateBuyButtonElement () {
+        this.button.html(`Buy (${this.price})`)
+    }
+
+    updateUpgradeIncreaseElement () {
+        this.upgradeIncreaseEl.html(this.upgradeIncrease)
     }
 
     buy = () => {
@@ -124,11 +141,11 @@ class Recipe {
             return null
         }
 
-        this.button.html(this.price)
-        this.levelEl.html(this.level)
-        this.titleEl.html(this.title)
-        this.descriptionEl.html(this.description)
-        this.upgradeIncreaseEl.html(this.upgradeIncrease)
+        // this.button.html(this.price)
+        this.updateBuyButtonElement()
+        // this.upgradeIncreaseEl.html(this.upgradeIncrease)
+        this.updateUpgradeIncreaseElement()
+        this.updateLevelElement()
 
         if (game) {
             const disabledState = (game.getAmount() >= this.price) ? false : true

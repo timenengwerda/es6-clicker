@@ -49,7 +49,6 @@ recipes.forEach(function (rec) {
 var game = null;
 
 var existingGameState = localStorage.getItem('gameState');
-console.log(existingGameState);
 if (existingGameState) {
     game = new Game(JSON.parse(existingGameState).find(function (r) {
         return r;

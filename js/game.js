@@ -1,7 +1,6 @@
 class Game {
     constructor (options = {}) {
-        console.log(options)
-        this.currentCoinAmount = (options.currentCoinAmount) ? options.currentCoinAmount : 300
+        this.currentCoinAmount = (options.currentCoinAmount) ? options.currentCoinAmount : 0
         this.amountPerSecond = (options.amountPerSecond) ? options.amountPerSecond : 0
         this.amountPerClick = (options.amountPerClick) ? options.amountPerClick : 1
         this.clickBonusMultiplier = (options.clickBonusMultiplier) ? options.clickBonusMultiplier : 100
@@ -101,22 +100,18 @@ class Game {
 
         this.timer += milliseconds
         this.increaseAmountBy(this.getAmountPerSecond() * (milliseconds / 1000))
-
+        this.recipes.drawRecipes()
         // tick every second
         if (this.timer >= 1000) {
             this.timer = 0
-
-            this.recipes.drawRecipes()
             this.save()
 
-
-            // const aps = this.amountPerSecondCalculated()
+            const aps = this.amountPerSecondCalculated()
             // if (aps !== false) {
             //     document.querySelector('#amountPerSecond').innerHTML = aps
             // }
+            console.log(`Amount per second: ${aps}`)
         }
-
-
 
         document.querySelector('#currentCoinAmount').innerHTML = this.getAmount()
         document.querySelector('#currentCoinsPerSecond').innerHTML = this.getAmountPerSecond()
