@@ -113,19 +113,19 @@ var Game = function Game() {
         var milliseconds = _this.defineMillisecondsPassed();
 
         _this.timer += milliseconds;
+        _this.increaseAmountBy(_this.getAmountPerSecond() * (milliseconds / 1000));
 
         // tick every second
         if (_this.timer >= 1000) {
-            _this.increaseAmountBy(_this.getAmountPerSecond() * (_this.timer / 1000));
             _this.timer = 0;
 
             _this.recipes.drawRecipes();
             _this.save();
 
-            var aps = _this.amountPerSecondCalculated();
-            if (aps !== false) {
-                document.querySelector('#amountPerSecond').innerHTML = aps;
-            }
+            // const aps = this.amountPerSecondCalculated()
+            // if (aps !== false) {
+            //     document.querySelector('#amountPerSecond').innerHTML = aps
+            // }
         }
 
         document.querySelector('#currentCoinAmount').innerHTML = _this.getAmount();
@@ -135,8 +135,8 @@ var Game = function Game() {
     };
 
     console.log(options);
-    this.currentCoinAmount = options.currentCoinAmount ? options.currentCoinAmount : 0;
-    this.amountPerSecond = options.amountPerSecond ? options.amountPerSecond : 25;
+    this.currentCoinAmount = options.currentCoinAmount ? options.currentCoinAmount : 300;
+    this.amountPerSecond = options.amountPerSecond ? options.amountPerSecond : 0;
     this.amountPerClick = options.amountPerClick ? options.amountPerClick : 1;
     this.clickBonusMultiplier = options.clickBonusMultiplier ? options.clickBonusMultiplier : 100;
 

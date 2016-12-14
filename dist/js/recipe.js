@@ -11,27 +11,34 @@ var Recipes = function Recipes(recipes) {
 
     this.recipes = [];
     this.createRecipes(recipes);
+    this.firstHit = true;
 };
 
 var _initialiseProps = function _initialiseProps() {
-    var _this3 = this;
+    var _this2 = this;
 
     this.createRecipes = function (recipes) {
         recipes.forEach(function (recipe) {
-            _this3.recipes.push(new Recipe(recipe));
+            _this2.recipes.push(new Recipe(recipe));
         });
 
-        _this3.drawRecipes();
+        _this2.drawRecipes();
     };
 
     this.drawRecipes = function () {
-        var list = $('<ul/>');
+        var list = $('ul.recipes-list');
 
-        _this3.recipes.forEach(function (r) {
-            list.append(r.drawRecipe());
+        _this2.recipes.forEach(function (r) {
+            if (_this2.firstHit) {
+                list.append(r.drawRecipe());
+            } else {
+                r.drawRecipe();
+            }
         });
 
-        $('#recipes').html(list);
+        _this2.firstHit = false;
+
+        // $('#recipes').html(list)
     };
 };
 
@@ -40,6 +47,23 @@ var Recipe = function () {
         var _this = this;
 
         _classCallCheck(this, Recipe);
+
+        this.createTemplate = function () {
+            _this.button = $('<button />').addClass('btn').addClass('btn-primary');
+            _this.listItem = $('<li />');
+            _this.levelEl = $('<span />').addClass('level').html(_this.level);
+            _this.titleEl = $('<span />').addClass('title').html(_this.title);
+            _this.descriptionEl = $('<span />').addClass('description').html(_this.description);
+            _this.upgradeIncreaseEl = $('<span />').addClass('upgradeIncrease').html(_this.upgradeIncrease);
+
+            _this.listItem.html('\n        Amount purchased: ' + _this.levelEl.html() + '<br>\n        ' + _this.titleEl.html() + '<br>\n        ' + _this.descriptionEl.html() + ' ' + _this.upgradeIncreaseEl.html() + '<br>\n        ');
+
+            _this.button.on('click', function (e) {
+                _this.buy();
+            });
+
+            _this.listItem.append(_this.button);
+        };
 
         this.buy = function () {
             if (game) {
@@ -87,34 +111,36 @@ var Recipe = function () {
 
         this.button = null;
         this.listItem = null;
+        this.levelEl = null;
+        this.titleEl = null;
+        this.descriptionEl = null;
+        this.upgradeIncreaseEl = null;
+
+        this.createTemplate();
+
+        if (this.level >= this.maxLevel) {
+            this.persists = false;
+        }
     }
 
     _createClass(Recipe, [{
         key: 'drawRecipe',
         value: function drawRecipe() {
-            var _this2 = this;
-
             if (!this.persists) {
-                this.button.off('click');
-                this.listItem.remove();
+                if (this.button && this.listItem) {
+                    this.button.off('click');
+                    this.listItem.remove();
+                }
+
                 delete this;
                 return null;
             }
-            if (!this.button && !this.listItem) {
-                this.button = $('<button />').addClass('btn').addClass('btn-primary');
-                this.button.on('click', function (e) {
-                    _this2.buy();
-                });
-
-                this.listItem = $('<li />');
-                this.listItem.html('Amount purchased: <span class="level">' + this.level + '</span><br>\n                                <span class="title">' + this.title + '</span><br>\n                                <span class="description">' + this.description + '</span><span class="upgradeIncrease">' + this.upgradeIncrease + '</span>\n                                <br>').append(this.button);
-            }
 
             this.button.html(this.price);
-            this.listItem.find('.level').html(this.level);
-            this.listItem.find('.title').html(this.title);
-            this.listItem.find('.description').html(this.description);
-            this.listItem.find('.upgradeIncrease').html(this.upgradeIncrease);
+            this.levelEl.html(this.level);
+            this.titleEl.html(this.title);
+            this.descriptionEl.html(this.description);
+            this.upgradeIncreaseEl.html(this.upgradeIncrease);
 
             if (game) {
                 var disabledState = game.getAmount() >= this.price ? false : true;

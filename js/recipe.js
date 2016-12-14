@@ -2,6 +2,7 @@ class Recipes {
     constructor (recipes) {
         this.recipes = []
         this.createRecipes(recipes)
+        this.firstHit = true
     }
 
     createRecipes = (recipes) => {
@@ -13,13 +14,19 @@ class Recipes {
     }
 
     drawRecipes = () => {
-        let list = $('<ul/>')
+        let list = $('ul.recipes-list')
 
         this.recipes.forEach(r => {
-            list.append(r.drawRecipe())
+            if (this.firstHit) {
+                list.append(r.drawRecipe())
+            } else {
+                r.drawRecipe()
+            }
         })
 
-        $('#recipes').html(list)
+        this.firstHit = false
+
+        // $('#recipes').html(list)
     }
 }
 
@@ -37,6 +44,38 @@ class Recipe {
 
         this.button = null
         this.listItem = null
+        this.levelEl = null
+        this.titleEl = null
+        this.descriptionEl = null
+        this.upgradeIncreaseEl = null
+
+        this.createTemplate()
+
+         if (this.level >= this.maxLevel) {
+            this.persists = false
+        }
+    }
+
+    createTemplate = () => {
+        this.button = $('<button />').addClass('btn').addClass('btn-primary')
+        this.listItem = $('<li />')
+        this.levelEl = $('<span />').addClass('level').html(this.level)
+        this.titleEl = $('<span />').addClass('title').html(this.title)
+        this.descriptionEl = $('<span />').addClass('description').html(this.description)
+        this.upgradeIncreaseEl = $('<span />').addClass('upgradeIncrease').html(this.upgradeIncrease)
+
+        this.listItem.html(`
+        Amount purchased: ${this.levelEl.html()}<br>
+        ${this.titleEl.html()}<br>
+        ${this.descriptionEl.html()} ${this.upgradeIncreaseEl.html()}<br>
+        `)
+
+        this.button.on('click', e => {
+            this.buy()
+        })
+
+
+        this.listItem.append(this.button)
     }
 
     buy = () => {
@@ -76,29 +115,20 @@ class Recipe {
 
     drawRecipe () {
         if (!this.persists) {
-            this.button.off('click')
-            this.listItem.remove()
+            if (this.button && this.listItem) {
+                this.button.off('click')
+                this.listItem.remove()
+            }
+
             delete this
             return null
         }
-        if (!this.button && !this.listItem) {
-            this.button = $('<button />').addClass('btn').addClass('btn-primary')
-            this.button.on('click', e => {
-                this.buy()
-            })
-
-            this.listItem = $('<li />')
-            this.listItem.html(`Amount purchased: <span class="level">${this.level}</span><br>
-                                <span class="title">${this.title}</span><br>
-                                <span class="description">${this.description}</span><span class="upgradeIncrease">${this.upgradeIncrease}</span>
-                                <br>`).append(this.button)
-        }
 
         this.button.html(this.price)
-        this.listItem.find('.level').html(this.level)
-        this.listItem.find('.title').html(this.title)
-        this.listItem.find('.description').html(this.description)
-        this.listItem.find('.upgradeIncrease').html(this.upgradeIncrease)
+        this.levelEl.html(this.level)
+        this.titleEl.html(this.title)
+        this.descriptionEl.html(this.description)
+        this.upgradeIncreaseEl.html(this.upgradeIncrease)
 
         if (game) {
             const disabledState = (game.getAmount() >= this.price) ? false : true
