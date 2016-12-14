@@ -101,8 +101,7 @@ var Game = function Game() {
     this.amountPerSecondCalculated = function () {
         var newAmount = _this.currentCoinAmount - _this.oldAmount;
         _this.oldAmount = _this.currentCoinAmount;
-
-        return newAmount >= 0 ? Math.round(newAmount) : false;
+        return newAmount >= 0 ? newAmount.toFixed(2) : false;
     };
 
     this.draw = function () {

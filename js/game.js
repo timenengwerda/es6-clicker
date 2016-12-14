@@ -88,8 +88,7 @@ class Game {
     amountPerSecondCalculated = () => {
         let newAmount = this.currentCoinAmount - this.oldAmount
         this.oldAmount = this.currentCoinAmount
-
-        return (newAmount >= 0) ? Math.round(newAmount) : false
+        return (newAmount >= 0) ? newAmount.toFixed(2) : false
     }
 
     draw = () => {
