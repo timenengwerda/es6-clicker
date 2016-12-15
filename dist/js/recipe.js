@@ -93,8 +93,7 @@ var Recipe = function () {
                     }
 
                     ++_this.level;
-                    _this.price += Math.round(_this.price * (.055 * (_this.level - 1)));
-                    _this.upgradeIncreaseprice += Math.round(_this.price * (.015 * (_this.level - 1)));
+                    _this.price += Math.round(_this.price * (.08 * (_this.level - 1)));
 
                     if (_this.level >= _this.maxLevel) {
                         _this.persists = false;

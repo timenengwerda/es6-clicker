@@ -135,7 +135,7 @@ var Game = function Game() {
 
     this.currentCoinAmount = options.currentCoinAmount ? options.currentCoinAmount : 0;
     this.amountPerSecond = options.amountPerSecond ? options.amountPerSecond : 0;
-    this.amountPerClick = options.amountPerClick ? options.amountPerClick : 1;
+    this.amountPerClick = options.amountPerClick ? options.amountPerClick : 2;
     this.clickBonusMultiplier = options.clickBonusMultiplier ? options.clickBonusMultiplier : 100;
 
     this.clickButton = document.querySelector('#clicker');
