@@ -2,7 +2,8 @@
 
 var recipes = [{
     title: 'Item 1',
-    price: 150,
+    price: 35,
+    basePrice: 35,
     level: 1,
     description: 'Increases click amount by:',
     upgrade: {
@@ -11,7 +12,8 @@ var recipes = [{
     }
 }, {
     title: 'Item 2',
-    price: 260,
+    price: 60,
+    basePrice: 60,
     level: 1,
     description: 'Increases amount per second by:',
     upgrade: {
@@ -20,7 +22,8 @@ var recipes = [{
     }
 }, {
     title: 'Item 3',
-    price: 400,
+    price: 67,
+    basePrice: 67,
     level: 1,
     description: 'Increases amount per second by:',
     upgrade: {
@@ -29,9 +32,21 @@ var recipes = [{
     }
 }, {
     title: 'Mega booster',
-    price: 4000,
+    price: 2500,
+    basePrice: 2500,
     level: 1,
     maxLevel: 1,
+    description: 'Adds an extra percentage to your clicks by:',
+    upgrade: {
+        type: 'clickMultiplier',
+        increase: 5
+    }
+}, {
+    title: 'Mega booster 2',
+    price: 3000,
+    basePrice: 3000,
+    level: 1,
+    maxLevel: 3,
     description: 'Adds an extra percentage to your clicks by:',
     upgrade: {
         type: 'clickMultiplier',

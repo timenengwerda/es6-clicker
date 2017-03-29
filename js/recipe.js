@@ -36,6 +36,7 @@ class Recipe {
         this.id = (options.id) ? options.id : true
         this.persists = (options.persists) ? options.persists : true
         this.price = (options.price) ? options.price : 0
+        this.basePrice = (options.basePrice) ? options.basePrice : 0
         this.title = (options.title) ? options.title : 0
         this.level = (options.level) ? options.level : 0
         this.maxLevel = (options.maxLevel) ? options.maxLevel : 999999
@@ -116,7 +117,7 @@ class Recipe {
                 }
 
                 ++this.level
-                this.price += Math.round(this.price * (.08 * (this.level - 1)))
+                this.price += this.basePrice * Math.pow(1.15, this.level)
 
                 if (this.level >= this.maxLevel) {
                     this.persists = false

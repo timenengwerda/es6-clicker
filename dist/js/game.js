@@ -74,6 +74,7 @@ var Game = function Game() {
                 id: rec.id,
                 persists: rec.persists,
                 price: rec.price,
+                basePrice: rec.basePrice,
                 title: rec.title,
                 level: rec.level,
                 maxLevel: rec.maxLevel,
@@ -137,7 +138,6 @@ var Game = function Game() {
     this.amountPerSecond = options.amountPerSecond ? options.amountPerSecond : 0;
     this.amountPerClick = options.amountPerClick ? options.amountPerClick : 2;
     this.clickBonusMultiplier = options.clickBonusMultiplier ? options.clickBonusMultiplier : 100;
-
     this.clickButton = document.querySelector('#clicker');
     this.clickButton.addEventListener('click', function (event) {
         _this.increaseAmountBy(_this.getClickAmount());
