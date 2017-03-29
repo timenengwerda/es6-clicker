@@ -43,7 +43,7 @@ var Game = function Game() {
     };
 
     this.setAmountPerSecond = function (amount) {
-        return _this.amountPerSecond = amount;
+        return _this.amountPerSecond = Math.round(amount * 100) / 100;
     };
 
     this.getAmountPerSecond = function () {

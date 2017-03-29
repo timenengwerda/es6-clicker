@@ -18,7 +18,7 @@ var recipes = [{
     description: 'Increases amount per second by:',
     upgrade: {
         type: 'amountPerSecond',
-        increase: 1.25
+        increase: .50
     }
 }, {
     title: 'Item 3',
@@ -28,7 +28,7 @@ var recipes = [{
     description: 'Increases amount per second by:',
     upgrade: {
         type: 'amountPerSecond',
-        increase: 1
+        increase: .53
     }
 }, {
     title: 'Mega booster',

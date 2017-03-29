@@ -18,7 +18,7 @@ const recipes = [
         description: 'Increases amount per second by:',
         upgrade: {
             type: 'amountPerSecond',
-            increase: 1.25
+            increase: .50
         }
     },
     {
@@ -29,7 +29,7 @@ const recipes = [
         description: 'Increases amount per second by:',
         upgrade: {
             type: 'amountPerSecond',
-            increase: 1
+            increase: .53
         }
     },
     {

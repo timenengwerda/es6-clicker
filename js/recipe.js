@@ -117,7 +117,7 @@ class Recipe {
                 }
 
                 ++this.level
-                this.price += this.basePrice * Math.pow(1.15, this.level)
+                this.price += Math.round(this.basePrice * Math.pow(1.15, this.level))
 
                 if (this.level >= this.maxLevel) {
                     this.persists = false

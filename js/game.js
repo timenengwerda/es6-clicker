@@ -34,7 +34,7 @@ class Game {
     getBonusMultiplier = () => this.clickBonusMultiplier
     setBonusMultiplier= (mp) => this.clickBonusMultiplier = mp
 
-    setAmountPerSecond = (amount) => this.amountPerSecond = amount
+    setAmountPerSecond = (amount) => this.amountPerSecond = (Math.round(amount * 100) / 100)
     getAmountPerSecond = () => this.amountPerSecond
 
     defineMillisecondsPassed = () => {
